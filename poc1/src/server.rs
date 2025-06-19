@@ -2,7 +2,11 @@ mod handlers;
 
 use std::net::{Ipv4Addr, SocketAddrV4};
 
-use axum::{extract::FromRef, routing::get, Router};
+use axum::{
+    extract::FromRef,
+    routing::{get, post},
+    Router,
+};
 use tokio::net::TcpListener;
 use tracing::info;
 
@@ -32,5 +36,6 @@ fn router(app: App) -> Router {
         .route("/", get(handlers::index::handler))
         .route("/login", get(handlers::login::start))
         .route("/login/success", get(handlers::login::success))
+        .route("/mail/incoming", post(handlers::mail::incoming))
         .with_state(app)
 }
