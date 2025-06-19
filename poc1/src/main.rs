@@ -1,5 +1,6 @@
 mod server;
 mod signicat;
+mod cloudmailin;
 
 use clap::Parser;
 use dotenvy::dotenv;
