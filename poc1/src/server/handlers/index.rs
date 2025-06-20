@@ -1,13 +1,10 @@
-use maud::{html, Markup};
+use axum::response::Redirect;
 
-use super::tpl;
+use crate::user::UserCookie;
 
-pub(crate) async fn handler() -> Markup {
-    tpl::clean(
-        "Welcome",
-        html! {
-            h1 { "Hello" }
-            a href="/login" { "Login" }
-        },
-    )
+pub(crate) async fn handler(user_cookie_result: Result<UserCookie, &'static str>) -> Redirect {
+    match user_cookie_result {
+        Ok(_) => Redirect::to("/inbox"),
+        Err(_) => Redirect::to("/login"),
+    }
 }

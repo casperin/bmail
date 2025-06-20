@@ -1,6 +1,7 @@
+mod cloudmailin;
 mod server;
 mod signicat;
-mod cloudmailin;
+mod user;
 
 use clap::Parser;
 use dotenvy::dotenv;
@@ -8,6 +9,8 @@ use tracing::error;
 
 #[derive(Debug, Parser)]
 struct Cli {
+    #[clap(long, env)]
+    database_url: String,
     #[clap(long, env, default_value = "3000")]
     port: u16,
     #[clap(long, env)]
