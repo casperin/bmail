@@ -10,7 +10,7 @@ use maud::html;
 use sqlx::SqlitePool;
 use uuid::Uuid;
 
-use crate::user::UserCookie;
+use crate::{cookie::Cook, user::UserCookie};
 
 use super::tpl;
 
@@ -31,17 +31,7 @@ pub(crate) async fn create(
     .await
     .unwrap();
 
-    let user_id_cookie = Cookie::build(("user_id", user_id.clone()))
-        .path("/")
-        .secure(true)
-        .http_only(true);
-
-    let name_cookie = Cookie::build(("name", name.clone()))
-        .path("/")
-        .secure(true)
-        .http_only(true);
-
-    let cookie_jar = CookieJar::new().add(user_id_cookie).add(name_cookie);
+    let jar = Cook::new().add("user_id", user_id).add("name", name).jar();
 
     let html = tpl::clean(
         "Email adresse",
@@ -57,7 +47,7 @@ pub(crate) async fn create(
         },
     );
 
-    (cookie_jar, html)
+    (jar, html)
 }
 
 pub(crate) async fn update(

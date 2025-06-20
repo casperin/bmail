@@ -38,6 +38,7 @@ fn router(app: App) -> Router {
     Router::new()
         .route("/", get(handlers::index::handler))
         .route("/login", get(handlers::login::start))
+        .route("/login/as_user", post(handlers::login::as_user))
         .route("/users/create", post(handlers::user::create))
         .route("/users/update", post(handlers::user::update))
         .route("/inbox", get(handlers::inbox::handler))

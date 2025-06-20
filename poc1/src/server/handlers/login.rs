@@ -1,8 +1,15 @@
-use axum::extract::State;
+use std::collections::HashMap;
+
+use axum::{
+    extract::State,
+    response::{IntoResponse, Redirect},
+    Form,
+};
+use axum_extra::extract::{cookie::Cookie, CookieJar};
 use maud::{html, Markup};
 use sqlx::SqlitePool;
 
-use crate::user::UserCookie;
+use crate::{cookie::Cook, user::UserCookie};
 
 use super::tpl;
 
@@ -28,8 +35,8 @@ pub(crate) async fn start(State(db): State<SqlitePool>) -> Markup {
                 button type="submit" { "Opret" }
             }
             h2 { "Vælg Eksisterend Bruger" }
-            form action="/login" method="POST" {
-                select name="id" {
+            form action="/login/as_user" method="POST" {
+                select name="user_id" {
                     @for user in users {
                         option value={ (user.user_id) } { (user.name) }
                     }
@@ -40,3 +47,24 @@ pub(crate) async fn start(State(db): State<SqlitePool>) -> Markup {
         },
     )
 }
+
+pub(crate) async fn as_user(
+    State(db): State<SqlitePool>,
+    Form(data): Form<HashMap<String, String>>,
+) -> impl IntoResponse {
+    let user_id = data.get("user_id").unwrap();
+    let name = sqlx::query!("SELECT name FROM users WHERE user_id=$1", user_id)
+        .fetch_one(&db)
+        .await
+        .unwrap()
+        .name;
+
+    let jar = Cook::new().add("user_id", user_id).add("name", name).jar();
+    let redirect = Redirect::to("/inbox");
+
+    (jar, redirect)
+}
+
+// pub(crate) async fn logout(
+
+// )

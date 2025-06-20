@@ -24,6 +24,10 @@ impl<S: Send + Sync> FromRequestParts<S> for UserCookie {
             .value()
             .to_string();
 
+        if user_id.is_empty() || name.is_empty() {
+            return Err("No user cookie");
+        }
+
         Ok(UserCookie { user_id, name })
     }
 }
