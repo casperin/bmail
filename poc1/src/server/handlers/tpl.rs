@@ -17,3 +17,17 @@ pub(crate) fn clean(title: impl Into<String>, body: Markup) -> Markup {
         }
     }
 }
+
+pub(crate) fn header(back: Option<&str>, user_name: &str) -> Markup {
+    html! {
+        div style="display:flex;justify-content:space-between" {
+            div {
+                @if let Some(href) = back {
+                    a href={ (href) } { "← Tilbage" }
+                }
+            }
+            a href="/settings" { (user_name) }
+        }
+        hr;
+    }
+}

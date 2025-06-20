@@ -9,3 +9,7 @@ body {
 a:link    { color: #00a; }
 a:active  { color: #a00; }
 a:visited { color: #a0a; }
+
+input, select, textarea {
+  font: inherit;
+}

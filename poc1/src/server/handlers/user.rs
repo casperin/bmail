@@ -5,8 +5,7 @@ use axum::{
     response::{IntoResponse, Redirect},
     Form,
 };
-use axum_extra::extract::{cookie::Cookie, CookieJar};
-use maud::html;
+use maud::{html, Markup};
 use sqlx::SqlitePool;
 use uuid::Uuid;
 
@@ -67,4 +66,51 @@ pub(crate) async fn update(
     }
 
     Redirect::to("/inbox")
+}
+
+pub(crate) async fn settings(user: UserCookie, State(db): State<SqlitePool>) -> Markup {
+    let rec = sqlx::query!("SELECT * FROM users WHERE user_id=$1", user.user_id)
+        .fetch_one(&db)
+        .await
+        .unwrap();
+
+    tpl::clean(
+        "Kontrolpanel",
+        html! {
+            h1 { (rec.name) }
+            form action="/logout" method="POST" {
+                button type="submit" { "Log ud" }
+            }
+            hr;
+            table {
+                tr {
+                    th { "ID" }
+                    td { (rec.user_id) }
+                }
+                tr {
+                    th { "Name" }
+                    td { (rec.name) }
+                }
+                tr {
+                    th { "Email adresse" }
+                    @match &rec.email_prefix {
+                        Some(email_prefix) => {
+                            td { (email_prefix) "@jazzreader.dk" }
+                        }
+                        None => {
+                            td { mark { "Ingen" } }
+                        }
+                    }
+                }
+                tr {
+                    th { "Mitid ID" }
+                    td { (rec.mitid_id) }
+                }
+                tr {
+                    th { "Oprettet" }
+                    td { (rec.created.unwrap()) }
+                }
+            }
+        },
+    )
 }

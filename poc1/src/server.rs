@@ -42,7 +42,9 @@ fn router(app: App) -> Router {
         .route("/logout", post(handlers::login::logout))
         .route("/users/create", post(handlers::user::create))
         .route("/users/update", post(handlers::user::update))
+        .route("/settings", get(handlers::user::settings))
         .route("/inbox", get(handlers::inbox::handler))
+        .route("/email/new", get(handlers::inbox::new))
         .route("/mail/incoming", post(handlers::mail::incoming))
         .with_state(app)
 }
