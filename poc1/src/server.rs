@@ -39,10 +39,10 @@ fn router(app: App) -> Router {
         .route("/", get(handlers::index::handler))
         .route("/login", get(handlers::login::start))
         .route("/login/as_user", post(handlers::login::as_user))
+        .route("/logout", post(handlers::login::logout))
         .route("/users/create", post(handlers::user::create))
         .route("/users/update", post(handlers::user::update))
         .route("/inbox", get(handlers::inbox::handler))
-        // .route("/login/success", get(handlers::login::success))
         .route("/mail/incoming", post(handlers::mail::incoming))
         .with_state(app)
 }

@@ -14,6 +14,11 @@ impl Cook {
         self
     }
 
+    pub fn rm(mut self, key: impl Into<String>) -> Self {
+        self.items.push((key.into(), "".into()));
+        self
+    }
+
     pub fn jar(self) -> CookieJar {
         self.items
             .into_iter()

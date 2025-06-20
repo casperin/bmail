@@ -5,7 +5,6 @@ use axum::{
     response::{IntoResponse, Redirect},
     Form,
 };
-use axum_extra::extract::{cookie::Cookie, CookieJar};
 use maud::{html, Markup};
 use sqlx::SqlitePool;
 
@@ -25,8 +24,11 @@ pub(crate) async fn start(State(db): State<SqlitePool>) -> Markup {
     tpl::clean(
         "Login",
         html! {
-            h1 { "Login (ikke implementeret)" }
-            p { "Denne del er ikke klar. Lav en ny bryger, eller vælg en allerede eksisterende." }
+            h1 { "Login" }
+            p {
+                mark { "Denne del er ikke klar." }
+                " Lav en ny bryger, eller vælg en allerede eksisterende."
+            }
             h2 { "Ny Bruger" }
             form action="/users/create" method="POST" {
                 label for="name" { "Navn" }
@@ -65,6 +67,8 @@ pub(crate) async fn as_user(
     (jar, redirect)
 }
 
-// pub(crate) async fn logout(
-
-// )
+pub(crate) async fn logout() -> impl IntoResponse {
+    let jar = Cook::new().rm("user_id").rm("name").jar();
+    let redirect = Redirect::to("/");
+    (jar, redirect)
+}
