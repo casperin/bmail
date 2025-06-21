@@ -45,6 +45,7 @@ fn router(app: App) -> Router {
         .route("/settings", get(handlers::user::settings))
         .route("/inbox", get(handlers::inbox::handler))
         .route("/email/new", get(handlers::inbox::new))
+        .route("/email/{email_id}", get(handlers::inbox::show))
         .route("/mail/incoming", post(handlers::mail::incoming))
         .with_state(app)
 }

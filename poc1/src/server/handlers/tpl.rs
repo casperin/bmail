@@ -1,4 +1,4 @@
-use maud::{html, Markup, DOCTYPE};
+use maud::{html, Markup, PreEscaped, DOCTYPE};
 
 pub(crate) fn clean(title: impl Into<String>, body: Markup) -> Markup {
     let style = std::fs::read_to_string("./src/server/static/style.css").unwrap();
@@ -9,7 +9,7 @@ pub(crate) fn clean(title: impl Into<String>, body: Markup) -> Markup {
             head {
                 meta charset="utf-8";
                 title { (title) }
-                style { (style) }
+                style { (PreEscaped(style)) }
             }
             body {
                 (body)

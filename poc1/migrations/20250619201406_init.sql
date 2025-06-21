@@ -4,7 +4,7 @@ CREATE TABLE users (
     mitid_id     TEXT UNIQUE      NOT NULL,
     name         TEXT             NOT NULL,
     email_prefix TEXT UNIQUE,
-    created      TEXT DEFAULT (datetime('now'))
+    created      TEXT DEFAULT (datetime('now')) NOT NULL
 );
 
 CREATE UNIQUE INDEX idx_users_mitid        ON users (mitid_id);

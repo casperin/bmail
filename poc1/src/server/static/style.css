@@ -1,15 +1,8 @@
-body {
-  font-family: sans-serif;
-  font-size: 19px;
-  max-width: 1000px;
-  padding: .3em;
-  margin: 0 auto;
-}
+/* body { */
+  /* font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; */
+  /* font-size: 19px; */
+/* } */
 
-a:link    { color: #00a; }
-a:active  { color: #a00; }
-a:visited { color: #a0a; }
-
-input, select, textarea {
-  font: inherit;
-}
+/* input, select, textarea { */
+  /* font: inherit; */
+/* } */

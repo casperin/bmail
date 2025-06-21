@@ -77,22 +77,19 @@ pub(crate) async fn settings(user: UserCookie, State(db): State<SqlitePool>) -> 
     tpl::clean(
         "Kontrolpanel",
         html! {
+            (tpl::header(Some("/inbox"), &rec.name))
             h1 { (rec.name) }
-            form action="/logout" method="POST" {
-                button type="submit" { "Log ud" }
-            }
-            hr;
             table {
                 tr {
-                    th { "ID" }
-                    td { (rec.user_id) }
+                    td { "ID" }
+                    td { code { (rec.user_id) } }
                 }
                 tr {
-                    th { "Name" }
+                    td { "Name" }
                     td { (rec.name) }
                 }
                 tr {
-                    th { "Email adresse" }
+                    td { "Email adresse" }
                     @match &rec.email_prefix {
                         Some(email_prefix) => {
                             td { (email_prefix) "@jazzreader.dk" }
@@ -103,13 +100,17 @@ pub(crate) async fn settings(user: UserCookie, State(db): State<SqlitePool>) -> 
                     }
                 }
                 tr {
-                    th { "Mitid ID" }
-                    td { (rec.mitid_id) }
+                    td { "Mitid ID" }
+                    td { code { (rec.mitid_id) } }
                 }
                 tr {
-                    th { "Oprettet" }
+                    td { "Oprettet" }
                     td { (rec.created.unwrap()) }
                 }
+            }
+            hr;
+            form action="/logout" method="POST" {
+                button type="submit" { "Log ud" }
             }
         },
     )
